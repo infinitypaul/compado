@@ -18,15 +18,8 @@ defined('ABSPATH') || exit;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-function compado_product_list_activate() {
-
-}
-register_activation_hook(__FILE__, 'compado_product_list_activate');
-
-function compado_product_list_deactivate() {
-
-}
-register_deactivation_hook(__FILE__, 'compado_product_list_deactivate');
+register_activation_hook(__FILE__, ['Compado\Products\PluginActivator', 'activate']);
+register_deactivation_hook(__FILE__, ['Compado\Products\PluginActivator', 'deactivate']);
 
 /**
  * @return void
@@ -38,7 +31,11 @@ function run_compado_product_list(): void
 
     $plugin = new Plugin($client, $render);
     $plugin->run();
-}
 
+    if (is_admin()) {
+        \Compado\Products\Admin\CompadoAdmin::register_hooks();
+    }
+}
+add_action('plugins_loaded', ['Compado\Products\CompadoI18n', 'load_textdomain']);
 run_compado_product_list();
 

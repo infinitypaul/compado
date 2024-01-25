@@ -2,120 +2,92 @@
 .compado-products-container .header {
     background-color: #ff6f31;
     color: white;
-    padding: 10px;
+    padding: 15px 20px;
+    font-size: 20px;
     font-weight: bold;
     text-align: center;
 }
 
 .compado-product {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    background: #ffffff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: #fff;
     border-radius: 4px;
-    overflow: hidden;
-}
-
-.compado-product .main-content {
+    margin-bottom: 30px;
     padding: 20px;
-    display: flex;
-    align-items: center;
-}
-
-.compado-product .logo {
-    max-width: 100px;
-    margin-right: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .compado-product h1 {
-    margin: 0;
-    color: #333333;
-    font-size: 24px;
+    color: #333;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .compado-product p {
-    font-size: 14px;
-    color: #666666;
+    margin-bottom: 15px;
+    color: #666;
+    line-height: 1.5;
+    font-weight: bold;
 }
 
 .compado-product .offer {
     background-color: #ffedd5;
     color: #ff6f31;
-    padding: 10px;
+    padding: 10px 15px;
     border-radius: 20px;
-    margin: 10px 0;
     font-weight: bold;
+    margin-bottom: 20px;
 }
+
 
 .compado-product .rating {
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .compado-product .rating .star {
     width: 20px;
-    margin-right: 2px;
+    margin-right: 5px;
 }
 
 .compado-product .rating span {
     font-weight: bold;
-    color: #ff6f31;
+    font-size: 24px;
 }
 
-.compado-product .info-icons {
-    display: flex;
-    justify-content: center;
-    padding: 10px 0;
-}
-
-.compado-product .info-icons img {
-    max-width: 20px;
-    margin-right: 10px;
-}
 
 .compado-product .buttons {
-    background-color: #f4f4f4;
-    padding: 10px;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
 }
 
 .compado-product .buttons .button {
     background-color: #ff6f31;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 15px 60px;
     border-radius: 4px;
     cursor: pointer;
-    text-transform: uppercase;
     font-weight: bold;
+    margin-bottom: 10px;
+    width: auto;
+    text-transform: uppercase;
 }
 
-
-.compado-no-products {
-    text-align: center;
-    padding: 20px;
-    font-size: 16px;
-    color: #666666;
+.compado-product .buttons .button.read-more {
+    background-color: #ffffff;
+    color: #ff6f31;
+    border: 1px solid #ff6f31;
 }
 
 
 @media (max-width: 768px) {
     .compado-product {
-        flex-direction: column;
+        padding: 15px;
     }
-
-    .compado-product .main-content {
-        flex-direction: column;
-    }
-
-    .compado-product .buttons {
-        flex-direction: column;
-    }
-
     .compado-product .buttons .button {
-        width: 100%;
-        margin-bottom: 10px;
+        padding: 10px 15px;
     }
 }

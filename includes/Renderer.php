@@ -38,7 +38,7 @@ class Renderer
         $productHtml .= '<div class="rating">';
 
         for ($i = 0; $i < 10; $i++) {
-            $productHtml .= $i < $product['rating'] ? '<img src="path_to_full_star.png" alt="Star" class="star">' : '<img src="path_to_empty_star.png" alt="Star" class="star">';
+            $productHtml .= $i < $product['rating'] ? '<img src="https://media.api-domain-compado.com/img/icons/rating-icons/star.svg?d=18x18&color=F7CB59FF" alt="Star" class="star">' : '<img src="https://media.api-domain-compado.com/img/icons/rating-icons/star.svg?d=18x18&color=FFEBB8FF" alt="Star" class="star">';
         }
         $productHtml .= '<span>' . esc_html($product['rating']) . '</span>';
         $productHtml .= '</div>';
