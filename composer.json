@@ -1,0 +1,18 @@
+{
+    "name": "infinitypaul/compado-product-list",
+    "description": "Fetches and displays a list of products from Compado's API",
+    "type": "library",
+    "license": "GPL2",
+    "autoload": {
+        "psr-4": {
+            "Compado\\Products\\": "includes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "infinitypaul",
+            "email": "infinitypaul@live.com"
+        }
+    ],
+    "require": {}
+}
