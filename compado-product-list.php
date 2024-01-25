@@ -12,4 +12,27 @@
  * Domain Path:       /languages
  */
 
+use Compado\Products\Plugin;
+
+defined('ABSPATH') || exit;
+
 require_once __DIR__ . '/vendor/autoload.php';
+
+function compado_product_list_activate() {
+
+}
+register_activation_hook(__FILE__, 'compado_product_list_activate');
+
+function compado_product_list_deactivate() {
+
+}
+register_deactivation_hook(__FILE__, 'compado_product_list_deactivate');
+
+function run_compado_product_list(): void
+{
+    $plugin = new Plugin();
+    $plugin->run();
+}
+
+run_compado_product_list();
+
