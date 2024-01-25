@@ -28,9 +28,15 @@ function compado_product_list_deactivate() {
 }
 register_deactivation_hook(__FILE__, 'compado_product_list_deactivate');
 
+/**
+ * @return void
+ */
 function run_compado_product_list(): void
 {
-    $plugin = new Plugin();
+    $client = new \Compado\Products\ApiClient();
+    $render = new \Compado\Products\Renderer();
+
+    $plugin = new Plugin($client, $render);
     $plugin->run();
 }
 
