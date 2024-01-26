@@ -1,93 +1,240 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 
-.compado-products-container .header {
-    background-color: #ff6f31;
+:root {
+    --primary-color: #ff6600;
+    --body-color: #fefefe;
+    --text-color: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+/**/
+
+.compado-container {
+    width: 780px;
+    background-color: white;
+    box-shadow: 4px 4px 14px rgba(70, 69, 70, 0.25);
+    border-radius: 4px;
+    position: relative;
+    margin: 30px auto 16px;
+}
+
+.compado-top {
+    position: absolute;
+    margin-top: -15px;
+    left: 0;
+    top: 0;
+    background-color: var(--primary-color);
+    border-top-left-radius: 10px;
+    padding: 2px 20px;
+}
+.compado-top small {
+    font-size: 16px;
+    line-height: 28px;
     color: white;
-    padding: 15px 20px;
+    font-weight: 400;
+}
+
+.compado-inner {
+    position: relative;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+.compado-img-container {
+    height: 100%;
+    flex: 1;
+}
+.compado-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.compado-text-container {
+    flex: 3;
+    margin-top: 5px;
+    flex-wrap: wrap;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.compado-service-title {
     font-size: 20px;
+    line-height: normal;
     font-weight: bold;
+    color: var(--text-color);
+    text-transform: none;
+    cursor: pointer;
+}
+.compado-service-description {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    color: var(--text-color);
+}
+
+.compado-info-box {
+    border-radius: 40px;
+    box-shadow: 0 4px 10px rgba(31, 70, 49, 0.2);
+    display: flex;
+    max-width: fit-content;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: fit-content;
+    padding: 6px 12px;
+    border: 1px solid var(--primary-color);
+    background: linear-gradient(
+            180deg,
+            hsla(0, 0%, 100%, 0.85) 0,
+            hsla(0, 0%, 100%, 0.5) 100%
+    ),
+    var(--primary-color);
+}
+.compado-info-box .compado-info-link {
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
     text-align: center;
 }
 
-.compado-product {
-    background: #fff;
-    border-radius: 4px;
-    margin-bottom: 30px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.compado-product h1 {
-    color: #333;
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.compado-product p {
-    margin-bottom: 15px;
-    color: #666;
-    line-height: 1.5;
-    font-weight: bold;
-}
-
-.compado-product .offer {
-    background-color: #ffedd5;
-    color: #ff6f31;
-    padding: 10px 15px;
-    border-radius: 20px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-
-.compado-product .rating {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.compado-product .rating .star {
-    width: 20px;
-    margin-right: 5px;
-}
-
-.compado-product .rating span {
-    font-weight: bold;
-    font-size: 24px;
-}
-
-
-.compado-product .buttons {
+.compado-right {
+    flex: 1;
+    height: 100%;
+    margin: 0 auto;
+    text-align: right;
     display: flex;
     flex-direction: column;
+    gap: 5px;
+}
+
+.compado-rating {
+    color: var(--text-color);
+    display: block;
+    font-size: 28px;
+    line-height: normal;
+    font-weight: 700;
+    text-transform: none;
+}
+.compado-stars {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 5px;
+}
+.compado-stars .fa {
+    color: #f7cb59;
+}
+
+.compado-bottom {
+    border-top: 1px solid #e5e5e5;
+    margin: 10px 20px 0;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
 }
 
-.compado-product .buttons .button {
-    background-color: #ff6f31;
+.compado-icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.compado-icon-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    align-items: center;
+}
+.compado-icon-container img {
+    width: 32px;
+    height: 32px;
+}
+.compado-icon-container .compado-icon-text {
+    font-size: 10px;
+    color: rgba(140, 140, 140);
+    text-align: center;
+}
+.compado-icon-container .compado-text-icon {
+    font-size: 16px;
+    color: rgba(140, 140, 140);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(140, 140, 140);
+}
+.compado-plan-btn {
+    background-color: var(--primary-color);
+    border-radius: 4px;
     color: white;
     border: none;
-    padding: 15px 60px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
+    padding: 10px 40px;
+}
+.compado-hidden-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 20px;
+    gap: 30px;
+}
+.compado-hidden-container ul {
+    list-style-type: none;
+    flex: 1;
+    list-style-position: outside;
+}
+.compado-hidden-container .list li {
     margin-bottom: 10px;
-    width: auto;
-    text-transform: uppercase;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
 }
 
-.compado-product .buttons .button.read-more {
-    background-color: #ffffff;
-    color: #ff6f31;
-    border: 1px solid #ff6f31;
+.compado-hidden-container ul li .fa {
+    font-size: 14px;
+    color: white;
+    background-color: green;
+    border-radius: 50%;
 }
 
-
-@media (max-width: 768px) {
-    .compado-product {
-        padding: 15px;
-    }
-    .compado-product .buttons .button {
-        padding: 10px 15px;
-    }
+.compado-read-more {
+    background-color: #efefef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.compado-read-more a {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    color: #8c8c8c;
+    text-decoration: none;
+    text-align: center;
+}
+.compado-read-more a .fa {
+    margin-left: 5px;
+    font-size: 12px;
+    color: #8c8c8c;
 }
