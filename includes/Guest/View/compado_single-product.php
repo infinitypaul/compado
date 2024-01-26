@@ -69,13 +69,13 @@ $coverImages = [
         </div>
     </div>
     <div class="compado-bottom">
-        <?=  \Compado\Products\Helper\CompadoMisc::generate_icons_html($product['icons'], $product['partner_id']) ?>
+        <?= (new \Compado\Products\Helper\IconGenerator())->generate_icons_html($product['icons'], $product['partner_id']) ?>
         <button class="compado-plan-btn compado-plan-btn-closed" data-product-id="<?php echo $product['partner_id']; ?>" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
     </div>
 <div class="compado-hidden-container" id="hiddenContainer<?php echo $product['partner_id']; ?>">
     <?php
     if (!empty($product['introduction'])) {
-        echo \Compado\Products\Helper\CompadoMisc::extract_ul_from_html($product['introduction']);
+        echo \Compado\Products\Helper\CompadoHelper::extract_ul_from_html($product['introduction']);
     }
     ?>
 

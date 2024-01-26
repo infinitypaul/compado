@@ -29,7 +29,8 @@ class CompadoApiClient
      *
      * @return array The array of products.
      */
-    public function getProducts() {
+    public function getProducts(): array
+    {
         $cachedProducts = $this->getCachedProducts();
 
         if ($cachedProducts !== false) {
@@ -62,7 +63,8 @@ class CompadoApiClient
      *
      * @return mixed The cached products if available, false otherwise.
      */
-    protected function getCachedProducts() {
+    protected function getCachedProducts(): mixed
+    {
         $options = get_option('compado_products_options');
         if (!empty($options['enable_transient'])) {
             return get_transient(self::TRANSIENT_KEY);
