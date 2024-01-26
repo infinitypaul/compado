@@ -2,30 +2,35 @@ document.addEventListener('DOMContentLoaded', function() {
     var readMoreToggles = document.querySelectorAll('.compadoReadMoreToggle');
 
     readMoreToggles.forEach(function(toggle) {
-        var targetId = toggle.getAttribute('data-target');
-        var hiddenContainer = document.getElementById(targetId);
-        var openButton = hiddenContainer.querySelector('.compado-plan-btn-open');
-        var closedButton = document.querySelector('.compado-plan-btn-closed');
-        hiddenContainer.style.maxHeight = '0';
-
         toggle.addEventListener('click', function() {
-            if (hiddenContainer.style.maxHeight !== '0px') {
-                hiddenContainer.style.maxHeight = '0';
+            var targetId = this.getAttribute('data-target');
+            var hiddenContainer = document.getElementById(targetId);
+            var productId = this.getAttribute('data-product-id');
+            var openButton = document.querySelector('.compado-plan-btn-open[data-product-id="' + productId + '"]');
+            var closedButton = document.querySelector('.compado-plan-btn-closed[data-product-id="' + productId + '"]');
 
-                openButton.style.display = 'none';
-                closedButton.style.display = 'block';
-                this.innerHTML = 'Read More <i class="fa fa-chevron-down"></i>';
-            } else {
+            if (hiddenContainer.style.maxHeight === '0px' || !hiddenContainer.style.maxHeight) {
                 hiddenContainer.style.maxHeight = hiddenContainer.scrollHeight + 'px';
                 openButton.style.display = 'block';
                 closedButton.style.display = 'none';
                 this.innerHTML = 'Read Less <i class="fa fa-chevron-up"></i>';
+            } else {
+                hiddenContainer.style.maxHeight = '0px';
+                openButton.style.display = 'none';
+                closedButton.style.display = 'block';
+                this.innerHTML = 'Read More <i class="fa fa-chevron-down"></i>';
             }
         });
     });
 
-    var carousels = document.querySelectorAll('.compado-carousel');
+    var hiddenContainers = document.querySelectorAll('.compado-hidden-container');
+    hiddenContainers.forEach(function(container) {
+        if (!container.style.maxHeight) {
+            container.style.maxHeight = '0px';
+        }
+    });
 
+    var carousels = document.querySelectorAll('.compado-carousel');
     carousels.forEach(function(carousel) {
         var images = carousel.querySelectorAll('.img');
         var dots = carousel.querySelectorAll('.dot');

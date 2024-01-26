@@ -70,7 +70,7 @@ $coverImages = [
     </div>
     <div class="compado-bottom">
         <?=  \Compado\Products\Helper\CompadoMisc::generate_icons_html($product['icons']) ?>
-        <button class="compado-plan-btn compado-plan-btn-closed" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
+        <button class="compado-plan-btn compado-plan-btn-closed" data-product-id="<?php echo $product['partner_id']; ?>" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
     </div>
 <div class="compado-hidden-container" id="hiddenContainer<?php echo $product['partner_id']; ?>">
     <?php
@@ -96,7 +96,7 @@ $coverImages = [
                     <span class="dot" data-slide="1"></span>
                     <span class="dot" data-slide="2"></span>
                 </div>
-                <button class="compado-plan-btn compado-plan-btn-open" style="display: none;" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
+                <button class="compado-plan-btn compado-plan-btn-open" data-product-id="<?php echo $product['partner_id']; ?>" style="display: none;" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
             </div>
 
         </div>
@@ -104,9 +104,7 @@ $coverImages = [
 
     </div>
     <div class="compado-read-more">
-        <a href="javascript:void(0);" data-target="hiddenContainer<?php echo $product['partner_id']; ?>" class="compadoReadMoreToggle compado-read-more-link">
-            Read More
-            <i class="fa fa-chevron-down"></i>
-        </a>
+
+        <a href="javascript:void(0);" data-target="hiddenContainer<?php echo $product['partner_id']; ?>" data-product-id="<?php echo $product['partner_id']; ?>" class="compadoReadMoreToggle compado-read-more-link">Read More <i class="fa fa-chevron-down"></i></a>
     </div>
 </div>
