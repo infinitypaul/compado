@@ -1,3 +1,5 @@
+<?php if (!defined('ABSPATH')) exit; ?>
+
 <?php if (!isset($product)) return;
 $redirectUrl = home_url('/compado-redirect/') . urldecode($product['api_exitover_url']);
 
@@ -49,23 +51,7 @@ $coverImages = [
 
         </div>
         <div class="compado-right">
-            <span class="compado-rating"><?=  esc_html($product['score']) ?></span>
-            <span class="compado-stars">
-                <?php
-                $rating = floatval($product['rating']);
-                $fullStars = floor($rating);
-                $halfStar = $rating - $fullStars > 0 ? 1 : 0;
-                $totalStars = 5;
-                for ($i = 0; $i < $totalStars; $i++): ?>
-                    <?php if ($i < $fullStars): ?>
-                        <i class="fa fa-star"></i>
-                    <?php elseif ($halfStar && $i === $fullStars): ?>
-                        <i class="fa fa-star-half-o"></i>
-                    <?php else: ?>
-                        <i class="fa fa-star-o"></i>
-                    <?php endif; ?>
-                <?php endfor; ?>
-          </span>
+            <?php include 'compado-star-rating.php'?>
         </div>
     </div>
     <div class="compado-bottom">
@@ -80,27 +66,7 @@ $coverImages = [
     ?>
 
         <div class="compado-img-container">
-            <div class="compado-carousel">
-                <div class="carousel-images">
-                    <?php
-                    foreach ($coverImages as $index => $coverImage) {
-                        if ($coverImage) {
-                            $isActive = $index === 0 ? ' active' : '';
-                            echo '<img src="https://media.api-domain-compado.com/' . esc_attr($coverImage) . '" alt="" class="img' . $isActive . '">';
-                        }
-                    }
-                    ?>
-                </div>
-                <div class="carousel-dots">
-                    <span class="dot active" data-slide="0"></span>
-                    <span class="dot" data-slide="1"></span>
-                    <span class="dot" data-slide="2"></span>
-                </div>
-
-            </div>
-            <div class="compado-carousel-buttons">
-                <button class="compado-plan-btn compado-plan-btn-open" data-product-id="<?php echo $product['partner_id']; ?>" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
-            </div>
+            <?php include "compado-carousel.php"; ?>
         </div>
 
 
