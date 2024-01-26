@@ -244,3 +244,58 @@
     font-size: 12px;
     color: #8c8c8c;
 }
+
+.compado-carousel .carousel-images .img {
+    display: none;
+}
+
+.compado-carousel .carousel-images .img.active {
+    display: block;
+}
+
+.carousel-dots {
+    text-align: center;
+    margin: 10px
+}
+
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.dot.active {
+    background-color: #717171;
+}
+
+.carousel-prev, .carousel-next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+.carousel-prev {
+    left: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.carousel-next {
+    right: 0;
+    border-radius: 0 3px 3px 0;
+}
+
+

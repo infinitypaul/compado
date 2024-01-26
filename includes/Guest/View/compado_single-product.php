@@ -1,5 +1,12 @@
 <?php if (!isset($product)) return;
 $redirectUrl = home_url('/compado-redirect/') . urldecode($product['api_exitover_url']);
+
+$coverImages = [
+    $product['cover_image'] ?? '',
+    $product['marketing_properties']['cover_image_2'] ?? '',
+    $product['marketing_properties']['cover_image_3'] ?? '',
+];
+
 ?>
 
 <div class="compado-container">
@@ -63,7 +70,7 @@ $redirectUrl = home_url('/compado-redirect/') . urldecode($product['api_exitover
     </div>
     <div class="compado-bottom">
         <?=  \Compado\Products\Helper\CompadoMisc::generate_icons_html($product['icons']) ?>
-        <button class="compado-plan-btn" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
+        <button class="compado-plan-btn compado-plan-btn-closed" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
     </div>
 <div class="compado-hidden-container" id="hiddenContainer<?php echo $product['partner_id']; ?>">
     <?php
@@ -73,12 +80,28 @@ $redirectUrl = home_url('/compado-redirect/') . urldecode($product['api_exitover
     ?>
 
         <div class="compado-img-container">
-            <img
-                    src="https://media.api-domain-compado.com/media/phpnQRJxy.jpg"
-                    alt=""
-                    class="img"
-            />
+            <div class="compado-carousel">
+                <div class="carousel-images">
+                    <?php
+                    foreach ($coverImages as $index => $coverImage) {
+                        if ($coverImage) {
+                            $isActive = $index === 0 ? ' active' : '';
+                            echo '<img src="https://media.api-domain-compado.com/' . esc_attr($coverImage) . '" alt="" class="img' . $isActive . '">';
+                        }
+                    }
+                    ?>
+                </div>
+                <div class="carousel-dots">
+                    <span class="dot active" data-slide="0"></span>
+                    <span class="dot" data-slide="1"></span>
+                    <span class="dot" data-slide="2"></span>
+                </div>
+                <button class="compado-plan-btn compado-plan-btn-open" style="display: none;" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
+            </div>
+
         </div>
+
+
     </div>
     <div class="compado-read-more">
         <a href="javascript:void(0);" data-target="hiddenContainer<?php echo $product['partner_id']; ?>" class="compadoReadMoreToggle compado-read-more-link">
