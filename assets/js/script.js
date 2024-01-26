@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var additionalIcons = document.getElementById('additional-icons-' + productId);
 
             if (hiddenContainer.style.maxHeight === '0px' || !hiddenContainer.style.maxHeight) {
-                hiddenContainer.style.maxHeight = hiddenContainer.scrollHeight + 'px';
+                hiddenContainer.style.maxHeight = hiddenContainer.scrollHeight+100 + 'px';
                 openButton.style.display = 'block';
                 closedButton.style.display = 'none';
                 this.innerHTML = 'Read Less <i class="fa fa-chevron-up"></i>';

@@ -1,7 +1,7 @@
 {
     "name": "infinitypaul/compado-product-list",
     "description": "Fetches and displays a list of products from Compado's API",
-    "type": "library",
+    "type": "wordpress-plugin",
     "license": "GPL2",
     "autoload": {
         "psr-4": {

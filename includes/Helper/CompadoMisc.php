@@ -39,13 +39,13 @@ class CompadoMisc
                     if (array_key_exists($item, $icon_mapping)) {
                         $icon_info = $icon_mapping[$item];
                         if ($icon_count < 6) {
-                            $html .= '<div class="compado-icon-container">';
+                            $html .= '<div class="compado-icon-container" title="' . $icon_info['text'] . '">';
                             $html .= '<img src="' . $base_icon_url . $icon_info['icon'] . '?q=100&d=32x32&color=686769" alt="' . $icon_info['text'] . '">';
                             $html .= '<span class="compado-icon-text">' . $icon_info['text'] . '</span>';
                             $html .= '</div>';
                         } else {
                             $additional_icons_count++;
-                            $additional_icons_html .= '<div class="compado-icon-container">';
+                            $additional_icons_html .= '<div class="compado-icon-container" title="' . $icon_info['text'] . '">';
                             $additional_icons_html .= '<img src="' . $base_icon_url . $icon_info['icon'] . '?q=100&d=32x32&color=686769" alt="' . $icon_info['text'] . '">';
                             $additional_icons_html .= '<span class="compado-icon-text">' . $icon_info['text'] . '</span>';
                             $additional_icons_html .= '</div>';
@@ -59,7 +59,7 @@ class CompadoMisc
         $additional_icons_html .= '</div>';
 
         if ($additional_icons_count > 0) {
-            $html .= '<div class="compado-icon-container more-icons" onclick="toggleAdditionalIcons(' . $product_id . ', this);" data-product-id="' . $product_id . '">';
+            $html .= '<div class="compado-icon-container more-icons" onclick="toggleAdditionalIcons(' . $product_id . ', this);" data-product-id="' . $product_id . '" title="More">';
             $html .= '<span class="compado-text-icon">+' . $additional_icons_count . '</span>';
             $html .= '<span class="compado-icon-text">More</span>';
             $html .= '</div>';
