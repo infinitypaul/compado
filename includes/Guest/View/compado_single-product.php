@@ -1,42 +1,63 @@
 <?php if (!isset($product)) return;
-$redirectUrl = home_url('/compado-redirect/') . urlencode($product['api_exitover_url']);
+$redirectUrl = home_url('/compado-redirect/') . urldecode($product['api_exitover_url']);
 ?>
 
 <div class="compado-container">
+    <?php
+    if(!empty($product['marketing_properties']['bubble'])){
+    ?>
     <div class="compado-top">
-        <small class="">Today's #1 Meal Delivery Service!</small>
+        <small class=""><?= esc_html($product['marketing_properties']['bubble']) ?></small>
     </div>
+    <?php
+    }
+    ?>
 
     <div class="compado-inner">
         <div class="compado-img-container">
             <img
-                    src="https://media.api-domain-compado.com/media/phplC7VVf.jpg?d=200x120&q=100"
-                    alt=""
+                    src="https://media.api-domain-compado.com/<?= esc_html($product['logo_image']) ?>?d=200x120&q=100"
+                    alt="<?php echo esc_html($product['partner_name']); ?>"
                     class="img"
             />
         </div>
         <div class="compado-text-container">
-            <h2 class="compado-service-title">HelloFresh!</h2>
+            <h2 class="compado-service-title"><?php echo esc_html($product['partner_name']); ?>!</h2>
             <p class="compado-service-description">
-                Create unique & delicious meals with Hello Fresh's easy-to-use meal
-                kits delivered right to you.
+                <?= strip_tags(esc_html($product['introduction']), 'ul, li') ?>
             </p>
-            <div class="compado-info-box">
-                <a href="#" class="compado-info-link"
-                >Get 60% off 1st box, 25% off next 8 boxes + free treats for
-                    life!</a
-                >
-            </div>
+            <?php
+            if(isset($product['marketing_properties']['discount_button'])){
+                ?>
+
+                <div class="compado-info-box">
+                    <a href="<?php echo esc_url($redirectUrl); ?>" target="_blank" class="compado-info-link"
+                    ><?php echo esc_html($product['marketing_properties']['discount_button']); ?></a
+                    >
+                </div>
+                <?php
+            }
+
+            ?>
+
         </div>
         <div class="compado-right">
-            <span class="compado-rating">9.9</span>
+            <span class="compado-rating"><?=  esc_html($product['score']) ?></span>
             <span class="compado-stars">
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-                <!-- Add star icon -->
+                <?php
+                $rating = floatval($product['rating']);
+                $fullStars = floor($rating);
+                $halfStar = $rating - $fullStars > 0 ? 1 : 0;
+                $totalStars = 5;
+                for ($i = 0; $i < $totalStars; $i++): ?>
+                    <?php if ($i < $fullStars): ?>
+                        <i class="fa fa-star"></i>
+                    <?php elseif ($halfStar && $i === $fullStars): ?>
+                        <i class="fa fa-star-half-o"></i>
+                    <?php else: ?>
+                        <i class="fa fa-star-o"></i>
+                    <?php endif; ?>
+                <?php endfor; ?>
           </span>
         </div>
     </div>
@@ -89,7 +110,7 @@ $redirectUrl = home_url('/compado-redirect/') . urlencode($product['api_exitover
                 <span class="compado-icon-text">More</span>
             </div>
         </div>
-        <button class="compado-plan-btn">View Plan</button>
+        <button class="compado-plan-btn" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
     </div>
     <div class="compado-hidden-container">
         <ul class="list">
