@@ -1,17 +1,17 @@
 <?php
 
 namespace Compado\Products;
-
-class Plugin
+defined('ABSPATH') || exit;
+class CompadoProductManager
 {
-    private ApiClient $client;
-    private Renderer $renderer;
+    private CompadoApiClient $client;
+    private CompadoRenderer $renderer;
 
     /**
-     * @param ApiClient $client
-     * @param Renderer $renderer
+     * @param CompadoApiClient $client
+     * @param CompadoRenderer $renderer
      */
-    public function __construct(ApiClient $client, Renderer $renderer){
+    public function __construct(CompadoApiClient $client, CompadoRenderer $renderer){
 
         $this->client = $client;
         $this->renderer = $renderer;

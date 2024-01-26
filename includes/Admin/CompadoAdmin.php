@@ -1,12 +1,32 @@
 <?php
 namespace Compado\Products\Admin;
+
+use Compado\Products\CompadoApiClient;
+
+defined('ABSPATH') || exit;
 class CompadoAdmin
 {
+    /**
+     * Registers the hooks for adding admin menus and registering settings.
+     *
+     * This method adds the necessary action hooks to register admin menus and register settings
+     * in the WordPress admin area.
+     *
+     * @return void
+     */
     public static function register_hooks() {
         add_action('admin_menu', [self::class, 'add_admin_menus']);
         add_action('admin_init', [self::class, 'register_settings']);
     }
 
+    /**
+     * Adds the admin menus for the Compado plugin.
+     *
+     * This method adds the necessary admin menu page for the Compado plugin
+     * in the WordPress admin area.
+     *
+     * @return void
+     */
     public static function add_admin_menus() {
         add_menu_page(
             __('Compado', 'compado-product-list'),
@@ -17,15 +37,31 @@ class CompadoAdmin
         );
     }
 
+    /**
+     * Callback function for admin page.
+     *
+     * This function includes the compado-admin_page_callback.php file.
+     *
+     * @return void
+     */
     public static function admin_page_callback(): void
     {
         include_once plugin_dir_path(__FILE__) . 'View/compado-admin_page_callback.php';
     }
 
+    /**
+     * Register settings for Compado Products.
+     *
+     * This function registers the settings for Compado Products, including options,
+     * sanitize callback, default values, and settings section.
+     * It also calls the add_settings_fields method to add the settings fields to the section.
+     *
+     * @return void
+     */
     public static function register_settings(): void
     {
         $defaults = [
-            'api_endpoint' => 'https://api.compado.com/v2_1/host/205/category/home/default',
+            'api_endpoint' => CompadoApiClient::DEFAULT_URI,
             'cache_duration' => 5 * HOUR_IN_SECONDS,
             'enable_transient' => 1,
         ];
@@ -52,6 +88,16 @@ class CompadoAdmin
     }
 
 
+    /**
+     * Add settings fields to the admin page.
+     *
+     * This method adds three settings fields to the "compado-products" admin page:
+     * 1. "compado_enable_transient" field with label "Enable Caching" and callback "compado_enable_transient_callback".
+     * 2. "compado_cache_duration" field with label "Cache Duration (in seconds)" and callback "compado_cache_duration_callback".
+     * 3. "compado_api_endpoint" field with label "API Endpoint URL" and callback "compado_api_endpoint_callback".
+     *
+     * @return void
+     */
     private static function add_settings_fields(): void {
         add_settings_field(
             'compado_enable_transient',
@@ -78,7 +124,19 @@ class CompadoAdmin
         );
     }
 
-    public static function validate_options($input) {
+    /**
+     * Validates the options input.
+     *
+     * This function validates the input options and returns the validated input.
+     * It checks the enable_transient option, api_endpoint option, and cache_duration option.
+     * If any of the options are invalid, it adds a settings error message.
+     *
+     * @param array $input The input options to be validated.
+     *
+     * @return array The validated input options.
+     */
+    public static function validate_options(array $input): array
+    {
         $new_input = [];
 
 
@@ -121,16 +179,36 @@ class CompadoAdmin
     }
 
 
-
+    /**
+     * Callback function for enabling transient.
+     *
+     * This function includes the 'compado-enable-transient-callback.php' file.
+     *
+     * @return void
+     */
     public static function compado_enable_transient_callback() {
         include_once 'View/compado-enable-transient-callback.php';
     }
 
+    /**
+     * Callback function for compado cache duration.
+     *
+     * This function includes the compado_cache_duration_callback.php file.
+     *
+     * @return void
+     */
     public static function compado_cache_duration_callback() {
         include_once 'View/compado_cache_duration_callback.php';
     }
 
 
+    /**
+     * Callback method for compado API endpoint.
+     *
+     * This method includes the compado_api_endpoint_callback.php file.
+     *
+     * @return void
+     */
     public static function compado_api_endpoint_callback() {
         include_once 'View/compado_api_endpoint_callback.php';
     }

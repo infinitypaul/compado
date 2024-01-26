@@ -12,24 +12,24 @@
  * Domain Path:       /languages
  */
 
-use Compado\Products\Plugin;
+use Compado\Products\CompadoProductManager;
 
 defined('ABSPATH') || exit;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-register_activation_hook(__FILE__, ['Compado\Products\PluginActivator', 'activate']);
-register_deactivation_hook(__FILE__, ['Compado\Products\PluginActivator', 'deactivate']);
+register_activation_hook(__FILE__, ['Compado\Products\CompadoPluginActivator', 'activate']);
+register_deactivation_hook(__FILE__, ['Compado\Products\CompadoPluginActivator', 'deactivate']);
 
 /**
  * @return void
  */
 function run_compado_product_list(): void
 {
-    $client = new \Compado\Products\ApiClient();
-    $render = new \Compado\Products\Renderer();
+    $client = new \Compado\Products\CompadoApiClient();
+    $render = new \Compado\Products\CompadoRenderer();
 
-    $plugin = new Plugin($client, $render);
+    $plugin = new CompadoProductManager($client, $render);
     $plugin->run();
 
     if (is_admin()) {

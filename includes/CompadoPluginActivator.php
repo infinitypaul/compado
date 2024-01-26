@@ -1,8 +1,8 @@
 <?php
 
 namespace Compado\Products;
-
-class PluginActivator
+defined('ABSPATH') || exit;
+class CompadoPluginActivator
 {
     public static function activate(): void
     {
@@ -13,7 +13,7 @@ class PluginActivator
     public static function deactivate(): void
     {
         flush_rewrite_rules();
-        delete_transient(ApiClient::TRANSIENT_KEY);
+        delete_transient(CompadoApiClient::TRANSIENT_KEY);
         // delete_option('compado_products_options');
     }
 }

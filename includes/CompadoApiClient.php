@@ -1,8 +1,8 @@
 <?php
 
 namespace Compado\Products;
-
-class ApiClient
+defined('ABSPATH') || exit;
+class CompadoApiClient
 {
     /**
      * The key used for caching the compado products transient.
