@@ -88,16 +88,16 @@ class CompadoAdmin
             }
         }
 
-        if (isset($input['caching_duration'])) {
-            $new_input['caching_duration'] = absint($input['caching_duration']);
+        if (isset($input['cache_duration'])) {
+            $new_input['cache_duration'] = absint($input['cache_duration']);
 
-            if (empty($new_input['caching_duration']) || !is_numeric($new_input['caching_duration'])) {
+            if (empty($new_input['cache_duration']) || !is_numeric($new_input['cache_duration'])) {
                 add_settings_error(
                     'caching_duration',
                     'invalid_caching_duration',
                     'Cache Duration must be a valid number.'
                 );
-                $new_input['caching_duration'] = '';
+                $new_input['cache_duration'] = '';
             }
         }
 
