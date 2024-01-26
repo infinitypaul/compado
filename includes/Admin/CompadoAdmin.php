@@ -22,10 +22,24 @@ class CompadoAdmin
         include_once plugin_dir_path(__FILE__) . 'View/compado-admin_page_callback.php';
     }
 
-    public static function register_settings() {
-        register_setting('compado_products_options_group', 'compado_products_options', [
-            'sanitize_callback' => [self::class, 'validate_options']
-        ]);
+    public static function register_settings(): void
+    {
+        $defaults = [
+            'api_endpoint' => 'https://api.compado.com/v2_1/host/205/category/home/default',
+            'cache_duration' => 5 * HOUR_IN_SECONDS,
+            'enable_transient' => 1,
+        ];
+
+        add_option('compado_products_options', $defaults);
+
+        register_setting(
+            'compado_products_options_group',
+            'compado_products_options',
+            [
+                'sanitize_callback' => [self::class, 'validate_options'],
+                'default' => $defaults
+            ]
+        );
 
         add_settings_section(
             'compado_products_settings_section',
@@ -36,6 +50,7 @@ class CompadoAdmin
 
         self::add_settings_fields();
     }
+
 
     private static function add_settings_fields(): void {
         add_settings_field(

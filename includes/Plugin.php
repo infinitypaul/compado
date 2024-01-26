@@ -16,9 +16,12 @@ class Plugin
         $this->client = $client;
         $this->renderer = $renderer;
     }
-    public function run() {
+    public function run(): void
+    {
         add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
         add_shortcode('compado_products', [$this, 'displayProducts']);
+        add_action('template_redirect', [$this, 'handle_custom_redirect']);
+        add_filter('query_vars', [$this, 'register_query_vars']);
     }
 
     public function enqueueAssets(): void
@@ -27,8 +30,29 @@ class Plugin
         wp_enqueue_script('compado-script', plugin_dir_url(__FILE__) . '../assets/js/script.js', ['jquery'], false, true);
     }
 
-    public function displayProducts() {
+    public function displayProducts(): string
+    {
         $products = $this->client->getProducts();
         return $this->renderer->render($products);
+    }
+
+    public function register_query_vars($vars) {
+        $vars[] = 'compado_redirect';
+        $vars[] = 'param';
+        return $vars;
+    }
+
+    public function handle_custom_redirect(): void
+    {
+        global $wp_query;
+
+        if (isset($wp_query->query_vars['compado_redirect'])) {
+            $path_segment = $wp_query->query_vars['compado_redirect'];
+
+            $actual_redirect_url = 'https://api.compado.com/' . $path_segment;
+
+            wp_redirect($actual_redirect_url);
+            exit;
+        }
     }
 }
