@@ -5,8 +5,7 @@ use DOMXPath;
 
 class CompadoMisc
 {
-    public static function generate_icons_html($icons): string
-    {
+    public static function generate_icons_html($icons, $product_id): string {
         $base_icon_url = "https://media.api-domain-compado.com/img/icons/partner-icons/";
 
         $icon_mapping = [
@@ -28,27 +27,50 @@ class CompadoMisc
         ];
 
         $html = '<div class="compado-icons">';
+        $icon_count = 0;
+        $additional_icons_count = 0;
+        $additional_icons_html = '<div id="additional-icons-' . $product_id . '" class="compado-hidden-icons" style="display: none;">';
+
         foreach ($icons as $category => $value) {
             if ($value) {
                 $items = explode('*', $value);
                 foreach ($items as $item) {
-                    if (empty($item)) {
-                        continue;
-                    }
+                    if (empty($item)) continue;
                     if (array_key_exists($item, $icon_mapping)) {
                         $icon_info = $icon_mapping[$item];
-                        $html .= '<div class="compado-icon-container">';
-                        $html .= '<img src="' . $base_icon_url . $icon_info['icon'] . '?q=100&d=32x32&color=686769" alt="' . $icon_info['text'] . '">';
-                        $html .= '<span class="compado-icon-text">' . $icon_info['text'] . '</span>';
-                        $html .= '</div>';
+                        if ($icon_count < 6) {
+                            $html .= '<div class="compado-icon-container">';
+                            $html .= '<img src="' . $base_icon_url . $icon_info['icon'] . '?q=100&d=32x32&color=686769" alt="' . $icon_info['text'] . '">';
+                            $html .= '<span class="compado-icon-text">' . $icon_info['text'] . '</span>';
+                            $html .= '</div>';
+                        } else {
+                            $additional_icons_count++;
+                            $additional_icons_html .= '<div class="compado-icon-container">';
+                            $additional_icons_html .= '<img src="' . $base_icon_url . $icon_info['icon'] . '?q=100&d=32x32&color=686769" alt="' . $icon_info['text'] . '">';
+                            $additional_icons_html .= '<span class="compado-icon-text">' . $icon_info['text'] . '</span>';
+                            $additional_icons_html .= '</div>';
+                        }
+                        $icon_count++;
                     }
                 }
             }
         }
-        $html .= '</div>';
+
+        $additional_icons_html .= '</div>';
+
+        if ($additional_icons_count > 0) {
+            $html .= '<div class="compado-icon-container more-icons" onclick="toggleAdditionalIcons(' . $product_id . ', this);" data-product-id="' . $product_id . '">';
+            $html .= '<span class="compado-text-icon">+' . $additional_icons_count . '</span>';
+            $html .= '<span class="compado-icon-text">More</span>';
+            $html .= '</div>';
+        }
+
+        $html .= $additional_icons_html; // Add the additional icons to the HTML
+        $html .= '</div>'; // Close the main icons div
 
         return $html;
     }
+
 
     public static function extract_ul_from_html($html): string
     {

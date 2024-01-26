@@ -159,6 +159,7 @@
     justify-content: center;
     gap: 5px;
     align-items: center;
+    cursor: pointer;
 }
 .compado-icon-container img {
     width: 32px;
@@ -298,4 +299,20 @@
     border-radius: 0 3px 3px 0;
 }
 
+.compado-carousel-buttons {
+    text-align: center;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.compado-plan-btn-open {
+    padding: 10px 30px;
+    margin: 0 auto;
+    display: block;
+}
+
+/*.compado-hidden-icons {*/
+/*    display: none;*/
+/*}*/

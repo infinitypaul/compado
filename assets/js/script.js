@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (hiddenContainer.style.maxHeight === '0px' || !hiddenContainer.style.maxHeight) {
                 hiddenContainer.style.maxHeight = hiddenContainer.scrollHeight + 'px';
+                //hiddenContainer.style.maxHeight = '1500px';
                 openButton.style.display = 'block';
                 closedButton.style.display = 'none';
                 this.innerHTML = 'Read Less <i class="fa fa-chevron-up"></i>';
@@ -29,6 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
             container.style.maxHeight = '0px';
         }
     });
+
+
+
 
     var carousels = document.querySelectorAll('.compado-carousel');
     carousels.forEach(function(carousel) {
@@ -51,3 +55,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+function toggleAdditionalIcons(productId, moreIconElement) {
+    var additionalIcons = document.getElementById('additional-icons-' + productId);
+    if (additionalIcons.style.display === 'none') {
+        additionalIcons.style.display = 'flex';
+        moreIconElement.style.display = 'none';
+    } else {
+        additionalIcons.style.display = 'none';
+        moreIconElement.style.display = 'flex';
+    }
+}

@@ -69,7 +69,7 @@ $coverImages = [
         </div>
     </div>
     <div class="compado-bottom">
-        <?=  \Compado\Products\Helper\CompadoMisc::generate_icons_html($product['icons']) ?>
+        <?=  \Compado\Products\Helper\CompadoMisc::generate_icons_html($product['icons'], $product['partner_id']) ?>
         <button class="compado-plan-btn compado-plan-btn-closed" data-product-id="<?php echo $product['partner_id']; ?>" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
     </div>
 <div class="compado-hidden-container" id="hiddenContainer<?php echo $product['partner_id']; ?>">
@@ -96,9 +96,11 @@ $coverImages = [
                     <span class="dot" data-slide="1"></span>
                     <span class="dot" data-slide="2"></span>
                 </div>
-                <button class="compado-plan-btn compado-plan-btn-open" data-product-id="<?php echo $product['partner_id']; ?>" style="display: none;" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
-            </div>
 
+            </div>
+            <div class="compado-carousel-buttons">
+                <button class="compado-plan-btn compado-plan-btn-open" data-product-id="<?php echo $product['partner_id']; ?>" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
+            </div>
         </div>
 
 
