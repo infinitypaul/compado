@@ -5,52 +5,73 @@ namespace Compado\Products;
 class ApiClient
 {
     const TRANSIENT_KEY = 'compado_products';
-
-    const URI = "https://api.compado.com/v2_1/host/205/category/home/default";
-
-    const TIMER = 6;
+    const DEFAULT_URI = "https://api.compado.com/v2_1/host/205/category/home/default";
+    const DEFAULT_CACHE_DURATION = HOUR_IN_SECONDS * 6;
 
     public function getProducts() {
-        $options = get_option('compado_products_options');
+        $cachedProducts = $this->getCachedProducts();
 
-        if (!empty($options['enable_transient'])) {
-            $products = get_transient(ApiClient::TRANSIENT_KEY);
-
-            if (false !== $products) {
-                return $products;
-            }
+        if ($cachedProducts !== false) {
+            return $cachedProducts;
         }
 
-        $api_endpoint = $options['api_endpoint'] ?? ApiClient::URI;
+        $products = $this->fetchProductsFromApi();
+
+        $this->cacheProducts($products);
+
+        return $products;
+    }
+
+    protected function cacheProducts(array $products): void {
+        $options = get_option('compado_products_options');
+        if (!empty($options['enable_transient'])) {
+            $cache_duration = $options['cache_duration'] ?? self::DEFAULT_CACHE_DURATION;
+            set_transient(self::TRANSIENT_KEY, $products, intval($cache_duration));
+        }
+    }
+
+    protected function getCachedProducts() {
+        $options = get_option('compado_products_options');
+        if (!empty($options['enable_transient'])) {
+            return get_transient(self::TRANSIENT_KEY);
+        }
+
+        return false;
+    }
+
+    protected function fetchProductsFromApi(): array {
+        $options = get_option('compado_products_options');
+        $api_endpoint = $options['api_endpoint'] ?? self::DEFAULT_URI;
 
         $response = wp_remote_get($api_endpoint);
 
         if (is_wp_error($response)) {
-            error_log($response->get_error_message());
+            $this->logError($response->get_error_message());
             return [];
         }
 
-        $status_code = wp_remote_retrieve_response_code($response);
-        if ($status_code != 200) {
-            error_log("API request returned status code: " . $status_code);
+        if (wp_remote_retrieve_response_code($response) !== 200) {
+            $this->logError("API request returned status code: " . wp_remote_retrieve_response_code($response));
             return [];
         }
 
-        $body = wp_remote_retrieve_body($response);
+        return $this->parseApiResponse(wp_remote_retrieve_body($response));
+    }
+
+    protected function logError(string $message): void {
+        if (defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
+            error_log($message);
+        }
+    }
+
+    protected function parseApiResponse(string $body): array {
         $decoded_body = json_decode($body, true);
 
-        if (is_array($decoded_body) && !empty($decoded_body)) {
-            $products = $decoded_body;
-
-            if (!empty($options['enable_transient'])) {
-                $cache_duration = !empty($options['cache_duration']) ? intval($options['cache_duration']) : HOUR_IN_SECONDS * ApiClient::TIMER;
-                set_transient(ApiClient::TRANSIENT_KEY, $products, $cache_duration);
-            }
-        } else {
-            error_log("API response has an unexpected format.");
+        if (!is_array($decoded_body) || empty($decoded_body)) {
+            $this->logError("API response has an unexpected format.");
             return [];
         }
 
-        return $products;
+        return $decoded_body;
     }
 }
