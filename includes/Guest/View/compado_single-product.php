@@ -24,7 +24,7 @@ $redirectUrl = home_url('/compado-redirect/') . urldecode($product['api_exitover
         <div class="compado-text-container">
             <h2 class="compado-service-title"><?php echo esc_html($product['partner_name']); ?>!</h2>
             <p class="compado-service-description">
-                <?= strip_tags(esc_html($product['introduction']), 'ul, li') ?>
+                <?= wp_kses_post($product['pricing']) ?>
             </p>
             <?php
             if(isset($product['marketing_properties']['discount_button'])){
@@ -65,21 +65,13 @@ $redirectUrl = home_url('/compado-redirect/') . urldecode($product['api_exitover
         <?=  \Compado\Products\Helper\CompadoMisc::generate_icons_html($product['icons']) ?>
         <button class="compado-plan-btn" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
     </div>
-    <div class="compado-hidden-container">
-        <ul class="list">
-            <li class="item">
-                <i class="fa fa-check"></i>
-                Save time & money, avoid long lines & high prices at supermarkets
-            </li>
-            <li class="item">
-                <i class="fa fa-check"></i>
-                Personalise your plan to deliver the food you want when you want
-            </li>
-            <li class="item">
-                <i class="fa fa-check"></i>
-                Make changes at any time using HelloFresh's user-friendly app
-            </li>
-        </ul>
+<div class="compado-hidden-container" id="hiddenContainer<?php echo $product['partner_id']; ?>">
+    <?php
+    if (!empty($product['introduction'])) {
+        echo \Compado\Products\Helper\CompadoMisc::extract_ul_from_html($product['introduction']);
+    }
+    ?>
+
         <div class="compado-img-container">
             <img
                     src="https://media.api-domain-compado.com/media/phpnQRJxy.jpg"
@@ -89,8 +81,8 @@ $redirectUrl = home_url('/compado-redirect/') . urldecode($product['api_exitover
         </div>
     </div>
     <div class="compado-read-more">
-        <a href="#" class="compado-read-more-link"
-        >Read More
+        <a href="javascript:void(0);" data-target="hiddenContainer<?php echo $product['partner_id']; ?>" class="compadoReadMoreToggle compado-read-more-link">
+            Read More
             <i class="fa fa-chevron-down"></i>
         </a>
     </div>

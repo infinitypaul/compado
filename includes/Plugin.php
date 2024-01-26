@@ -18,7 +18,6 @@ class Plugin
     }
     public function run(): void
     {
-        add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
         add_shortcode('compado_products', [$this, 'displayProducts']);
         add_action('template_redirect', [$this, 'handle_custom_redirect']);
         add_filter('query_vars', [$this, 'register_query_vars']);
@@ -27,11 +26,12 @@ class Plugin
     public function enqueueAssets(): void
     {
         wp_enqueue_style('compado-style', plugin_dir_url(__FILE__) . '../assets/css/style.css');
-        wp_enqueue_script('compado-script', plugin_dir_url(__FILE__) . '../assets/js/script.js', ['jquery'], false, true);
+        wp_enqueue_script('compado-script', plugin_dir_url(__FILE__) . '../assets/js/script.js', ['jquery'], true, true);
     }
 
     public function displayProducts(): string
     {
+        $this->enqueueAssets();
         $products = $this->client->getProducts();
         return $this->renderer->render($products);
     }

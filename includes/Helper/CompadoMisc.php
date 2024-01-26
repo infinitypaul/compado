@@ -1,8 +1,12 @@
 <?php
 namespace Compado\Products\Helper;
+use DOMDocument;
+use DOMXPath;
+
 class CompadoMisc
 {
-    public static function generate_icons_html($icons) {
+    public static function generate_icons_html($icons): string
+    {
         $base_icon_url = "https://media.api-domain-compado.com/img/icons/partner-icons/";
 
         $icon_mapping = [
@@ -13,6 +17,14 @@ class CompadoMisc
             'mastercard' => ['icon' => 'mastercard.svg', 'text' => 'Mastercard'],
             'paypal' => ['icon' => 'paypal.svg', 'text' => 'PayPal'],
             'visa' => ['icon' => 'visa.svg', 'text' => 'Visa'],
+            'keto' => ['icon' => 'keto.svg', 'text' => 'Keto'],
+            'paleo' => ['icon' => 'paleo.svg', 'text' => 'Paleo'],
+            'gluten-free' => ['icon' => 'gluten-free.svg', 'text' => 'Gluten Free'],
+            'vegan' => ['icon' => 'vegan.svg', 'text' => 'Vegan'],
+            'weight-loss' => ['icon' => 'weight-loss.svg', 'text' => 'Weight Loss'],
+            'lowcarb' => ['icon' => 'lowcarb.svg', 'text' => 'Low Carb'],
+            'preparedmeals' => ['icon' => 'preparedmeals.svg', 'text' => 'Prepared'],
+            'juice' => ['icon' => 'juice.svg', 'text' => 'Juice'],
         ];
 
         $html = '<div class="compado-icons">';
@@ -37,5 +49,24 @@ class CompadoMisc
 
         return $html;
     }
+
+    public static function extract_ul_from_html($html): string
+    {
+        $dom = new DOMDocument();
+        @$dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+        $xpath = new DOMXPath($dom);
+
+        $ulList = $xpath->query('//ul');
+
+        $listHtml = '';
+
+        foreach ($ulList as $ul) {
+            $listHtml .= $dom->saveHTML($ul);
+        }
+
+        return wp_kses_post($listHtml);
+    }
+
 
 }
