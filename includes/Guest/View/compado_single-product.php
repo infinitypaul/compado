@@ -62,54 +62,7 @@ $redirectUrl = home_url('/compado-redirect/') . urldecode($product['api_exitover
         </div>
     </div>
     <div class="compado-bottom">
-        <div class="compado-icons">
-            <div class="compado-icon-container">
-                <img
-                        src="https://media.api-domain-compado.com/img/icons/partner-icons/mealkits.svg?q=100&d=32x32&color=686769"
-                        alt=""
-                />
-                <span class="compado-icon-text">Meal Kits</span>
-            </div>
-            <div class="compado-icon-container">
-                <img
-                        src="https://media.api-domain-compado.com/img/icons/partner-icons/vegetarian.svg?q=100&d=32x32&color=686769"
-                        alt=""
-                />
-                <span class="compado-icon-text">Vegetarian</span>
-            </div>
-            <div class="compado-icon-container">
-                <img
-                        src="https://media.api-domain-compado.com/img/icons/partner-icons/diabetics.svg?q=100&d=32x32&color=686769"
-                        alt=""
-                />
-                <span class="compado-icon-text">Diabetics</span>
-            </div>
-            <div class="compado-icon-container">
-                <img
-                        src="https://media.api-domain-compado.com/img/icons/partner-icons/singles.svg?q=100&d=32x32&color=686769"
-                        alt=""
-                />
-                <span class="compado-icon-text">Singles</span>
-            </div>
-            <div class="compado-icon-container">
-                <img
-                        src="https://media.api-domain-compado.com/img/icons/partner-icons/mastercard.svg?q=100&d=32x32&color=686769"
-                        alt=""
-                />
-                <span class="compado-icon-text">Mastercard</span>
-            </div>
-            <div class="compado-icon-container">
-                <img
-                        src="https://media.api-domain-compado.com/img/icons/partner-icons/paypal.svg?q=100&d=32x32&color=686769"
-                        alt=""
-                />
-                <span class="compado-icon-text">Paypal</span>
-            </div>
-            <div class="compado-icon-container">
-                <span class="compado-text-icon">+1</span>
-                <span class="compado-icon-text">More</span>
-            </div>
-        </div>
+        <?=  \Compado\Products\Helper\CompadoMisc::generate_icons_html($product['icons']) ?>
         <button class="compado-plan-btn" onclick="location.href='<?php echo esc_url($redirectUrl); ?>'">View Plan</button>
     </div>
     <div class="compado-hidden-container">
