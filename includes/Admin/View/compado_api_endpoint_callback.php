@@ -4,5 +4,6 @@ $api_endpoint = $options['api_endpoint'] ?? '';
 ?>
 
 <div class="compado-field">
-    <input type="text" id="compado_api_endpoint" name="compado_products_options[api_endpoint]" value="<?php echo esc_attr($api_endpoint); ?>" size="50">
+    <span id="compado_api_endpoint"><?php echo esc_html($api_endpoint); ?></span>
+<!--    <input type="text" id="compado_api_endpoint" readonly name="compado_products_options[api_endpoint]" value="--><?php //echo esc_attr($api_endpoint); ?><!--" size="50">-->
 </div>

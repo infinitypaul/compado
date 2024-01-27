@@ -127,7 +127,8 @@ class CompadoAdmin
 
         $new_input['enable_transient'] = isset($input['enable_transient']) ? 1 : 0;
 
-        $new_input['api_endpoint'] = self::validate_api_endpoint($input['api_endpoint'] ?? '', $options['api_endpoint'] ?? '');
+        //$new_input['api_endpoint'] = self::validate_api_endpoint($input['api_endpoint'] ?? '', $options['api_endpoint'] ?? '');
+        $new_input['api_endpoint'] = Config::API_ENDPOINT;
 
         $new_input['cache_duration'] = self::validate_cache_duration($input['cache_duration'] ?? '', $options['cache_duration'] ?? '');
 
