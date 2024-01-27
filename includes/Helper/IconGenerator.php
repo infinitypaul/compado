@@ -2,8 +2,14 @@
 namespace Compado\Products\Helper;
 class IconGenerator
 {
-    private string $base_icon_url;
-    private array $icon_mapping;
+    /**
+     * @var string
+     */
+    private $base_icon_url;
+    /**
+     * @var array[]
+     */
+    private $icon_mapping;
 
     public function __construct() {
         $this->base_icon_url = "https://media.api-domain-compado.com/img/icons/partner-icons/";

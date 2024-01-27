@@ -42,12 +42,13 @@ class CompadoApiClient
         }
     }
 
+
     /**
-     * Get cached products.
+     * Retrieves the cached products from the transient, if the enable_transient option is set.
      *
-     * @return mixed The cached products if available, false otherwise.
+     * @return mixed|array|bool The cached products, or false if caching is not enabled.
      */
-    protected function getCachedProducts(): mixed
+    protected function getCachedProducts()
     {
         $options = get_option('compado_products_options');
         if (!empty($options['enable_transient'])) {

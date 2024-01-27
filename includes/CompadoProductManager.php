@@ -8,8 +8,15 @@ use WP_Query;
 defined('ABSPATH') || exit;
 class CompadoProductManager
 {
-    private CompadoApiClient $client;
-    private CompadoRenderer $renderer;
+    /**
+     * @var CompadoApiClient
+     */
+    private $client;
+
+    /**
+     * @var CompadoRenderer
+     */
+    private $renderer;
 
     /**
      * Constructs a new instance of the class.
@@ -89,7 +96,7 @@ class CompadoProductManager
      * @param array $vars The array of query variables.
      * @return array The modified array of query variables.
      */
-    public function register_query_vars($vars): mixed
+    public function register_query_vars(array $vars): array
     {
         $vars[] = Config::QUERY_VAR_REDIRECT;
         return $vars;
