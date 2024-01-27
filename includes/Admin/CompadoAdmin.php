@@ -156,14 +156,15 @@ class CompadoAdmin
         return sanitize_text_field($input_api_endpoint);
     }
 
+
     /**
-     * Validates the cache duration input and returns a string representation of the cache duration.
+     * Validates the cache duration input and returns the existing cache duration if the input is invalid.
      *
-     * @param mixed $input_cache_duration
+     * @param $input_cache_duration
      * @param string $existing_cache_duration
      * @return string
      */
-    private static function validate_cache_duration(mixed $input_cache_duration, string $existing_cache_duration): string {
+    private static function validate_cache_duration($input_cache_duration, string $existing_cache_duration): string {
         if (empty($input_cache_duration) || !is_numeric($input_cache_duration)) {
             self::add_error('caching_duration', 'invalid_caching_duration', 'Cache Duration must be a valid number.');
             return $existing_cache_duration;
