@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('ABSPATH')) exit;
 $options = get_option('compado_products_options');
 $cache_duration = $options['cache_duration'] ?? '';
 ?>

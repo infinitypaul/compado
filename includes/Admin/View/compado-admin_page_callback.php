@@ -1,4 +1,5 @@
-<?php if (!current_user_can('manage_options')) return;
+<?php if (!defined('ABSPATH')) exit;
+if (!current_user_can('manage_options')) return;
 $options = get_option('compado_products_options');
 ?>
 <?php settings_errors(); ?>

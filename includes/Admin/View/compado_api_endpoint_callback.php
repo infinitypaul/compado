@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('ABSPATH')) exit;
 $options = get_option('compado_products_options');
 $api_endpoint = $options['api_endpoint'] ?? '';
 ?>
