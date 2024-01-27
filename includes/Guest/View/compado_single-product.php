@@ -27,6 +27,7 @@ $coverImages = [
             <img
                     src="https://media.api-domain-compado.com/<?= esc_html($product['logo_image']) ?>?d=200x120&q=100"
                     alt="<?php echo esc_html($product['partner_name']); ?>"
+                    loading="lazy"
                     class="img"
             />
         </div>

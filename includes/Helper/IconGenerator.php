@@ -48,7 +48,7 @@ class IconGenerator
 
                     $icon_info = $this->icon_mapping[$item];
                     $icon_html = '<div class="compado-icon-container" title="' . esc_attr($icon_info['text']) . '">';
-                    $icon_html .= '<img src="' . esc_url($this->base_icon_url . $icon_info['icon']) . '?q=100&d=32x32&color=686769" alt="' . esc_attr($icon_info['text']) . '">';
+                    $icon_html .= '<img src="' . esc_url($this->base_icon_url . $icon_info['icon']) . '?q=100&d=32x32&color=686769" alt="' . esc_attr($icon_info['text']) . '" loading="lazy">';
                     $icon_html .= '<span class="compado-icon-text">' . esc_html($icon_info['text']) . '</span>';
                     $icon_html .= '</div>';
 

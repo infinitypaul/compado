@@ -2,15 +2,13 @@
 namespace Compado\Products\Admin;
 
 use Compado\Products\CompadoApiClient;
+use Compado\Products\Helper\Config;
 
 defined('ABSPATH') || exit;
 class CompadoAdmin
 {
     /**
      * Registers the hooks for adding admin menus and registering settings.
-     *
-     * This method adds the necessary action hooks to register admin menus and register settings
-     * in the WordPress admin area.
      *
      * @return void
      */
@@ -22,15 +20,13 @@ class CompadoAdmin
     /**
      * Adds the admin menus for the Compado plugin.
      *
-     * This method adds the necessary admin menu page for the Compado plugin
-     * in the WordPress admin area.
      *
      * @return void
      */
     public static function add_admin_menus() {
         add_menu_page(
-            __('Compado', 'compado-product-list'),
-            __('Compado', 'compado-product-list'),
+            __('Compado', Config::TEXT_DOMAIN),
+            __('Compado', Config::TEXT_DOMAIN),
             'manage_options',
             'compado-products',
             [self::class, 'admin_page_callback']
@@ -52,18 +48,15 @@ class CompadoAdmin
     /**
      * Register settings for Compado Products.
      *
-     * This function registers the settings for Compado Products, including options,
-     * sanitize callback, default values, and settings section.
-     * It also calls the add_settings_fields method to add the settings fields to the section.
      *
      * @return void
      */
     public static function register_settings(): void
     {
         $defaults = [
-            'api_endpoint' => CompadoApiClient::DEFAULT_URI,
-            'cache_duration' => 5 * HOUR_IN_SECONDS,
-            'enable_transient' => 1,
+            'api_endpoint' => Config::API_ENDPOINT,
+            'cache_duration' => Config::DEFAULT_CACHE_DURATION,
+            'enable_transient' => Config::DEFAULT_ENABLE_TRANSIENT,
         ];
 
         add_option('compado_products_options', $defaults);
@@ -79,7 +72,7 @@ class CompadoAdmin
 
         add_settings_section(
             'compado_products_settings_section',
-            __('Compado Products Settings', 'compado-product-list'),
+            __('Compado Products Settings', Config::TEXT_DOMAIN),
             null,
             'compado-products'
         );
@@ -91,17 +84,13 @@ class CompadoAdmin
     /**
      * Add settings fields to the admin page.
      *
-     * This method adds three settings fields to the "compado-products" admin page:
-     * 1. "compado_enable_transient" field with label "Enable Caching" and callback "compado_enable_transient_callback".
-     * 2. "compado_cache_duration" field with label "Cache Duration (in seconds)" and callback "compado_cache_duration_callback".
-     * 3. "compado_api_endpoint" field with label "API Endpoint URL" and callback "compado_api_endpoint_callback".
      *
      * @return void
      */
     private static function add_settings_fields(): void {
         add_settings_field(
             'compado_enable_transient',
-            __('Enable Caching', 'compado-product-list'),
+            __('Enable Caching', Config::TEXT_DOMAIN),
             [self::class, 'compado_enable_transient_callback'],
             'compado-products',
             'compado_products_settings_section'
@@ -109,7 +98,7 @@ class CompadoAdmin
 
         add_settings_field(
             'compado_cache_duration',
-            __('Cache Duration (in seconds)', 'compado-product-list'),
+            __('Cache Duration (in seconds)', Config::TEXT_DOMAIN),
             [self::class, 'compado_cache_duration_callback'],
             'compado-products',
             'compado_products_settings_section'
@@ -117,7 +106,7 @@ class CompadoAdmin
 
         add_settings_field(
             'compado_api_endpoint',
-            __('API Endpoint URL', 'compado-product-list'),
+            __('API Endpoint URL', Config::TEXT_DOMAIN),
             [self::class, 'compado_api_endpoint_callback'],
             'compado-products',
             'compado_products_settings_section'
@@ -125,79 +114,101 @@ class CompadoAdmin
     }
 
     /**
-     * Validates the options input.
+     * Validates the options array and returns the validated values.
      *
-     * This function validates the input options and returns the validated input.
-     * It checks the enable_transient option, api_endpoint option, and cache_duration option.
-     * If any of the options are invalid, it adds a settings error message.
      *
-     * @param array $input The input options to be validated.
+     * @param array $input
      *
-     * @return array The validated input options.
+     * @return array
      */
-    public static function validate_options(array $input): array
-    {
+    public static function validate_options(array $input): array {
         $new_input = [];
-
+        $options = get_option('compado_products_options');
 
         $new_input['enable_transient'] = isset($input['enable_transient']) ? 1 : 0;
 
-        if (isset($input['api_endpoint'])) {
-            $new_input['api_endpoint'] = sanitize_text_field($input['api_endpoint']);
+        $new_input['api_endpoint'] = self::validate_api_endpoint($input['api_endpoint'] ?? '', $options['api_endpoint'] ?? '');
 
-            if (empty($new_input['api_endpoint'])) {
-                add_settings_error(
-                    'api_endpoint',
-                    'empty_api_endpoint',
-                    'API Endpoint URL is required.'
-                );
-            } else if (!filter_var($new_input['api_endpoint'], FILTER_VALIDATE_URL)) {
-                add_settings_error(
-                    'api_endpoint',
-                    'invalid_api_endpoint',
-                    'Invalid API Endpoint URL provided.'
-                );
-                $new_input['api_endpoint'] = '';
-            }
-        }
-
-        if (isset($input['cache_duration'])) {
-            $new_input['cache_duration'] = absint($input['cache_duration']);
-
-            if (empty($new_input['cache_duration']) || !is_numeric($new_input['cache_duration'])) {
-                add_settings_error(
-                    'caching_duration',
-                    'invalid_caching_duration',
-                    'Cache Duration must be a valid number.'
-                );
-                $new_input['cache_duration'] = '';
-            }
-        }
-
+        $new_input['cache_duration'] = self::validate_cache_duration($input['cache_duration'] ?? '', $options['cache_duration'] ?? '');
 
         return $new_input;
     }
+
+    /**
+     * Validates the API endpoint URL.
+     *
+     * @param string $input_api_endpoint The input API endpoint URL to be validated.
+     * @param string $existing_api_endpoint
+     *
+     * @return string
+     */
+    private static function validate_api_endpoint(string $input_api_endpoint, string $existing_api_endpoint): string {
+        if (empty($input_api_endpoint)) {
+            self::add_error('api_endpoint', 'empty_api_endpoint', 'API Endpoint URL is required.');
+            return $existing_api_endpoint;
+        }
+
+        if (!filter_var($input_api_endpoint, FILTER_VALIDATE_URL)) {
+            self::add_error('api_endpoint', 'invalid_api_endpoint', 'Invalid API Endpoint URL provided.');
+            return $existing_api_endpoint;
+        }
+
+        return sanitize_text_field($input_api_endpoint);
+    }
+
+    /**
+     * Validates the cache duration input and returns a string representation of the cache duration.
+     *
+     * @param mixed $input_cache_duration
+     * @param string $existing_cache_duration
+     * @return string
+     */
+    private static function validate_cache_duration(mixed $input_cache_duration, string $existing_cache_duration): string {
+        if (empty($input_cache_duration) || !is_numeric($input_cache_duration)) {
+            self::add_error('caching_duration', 'invalid_caching_duration', 'Cache Duration must be a valid number.');
+            return $existing_cache_duration;
+        }
+
+        return absint($input_cache_duration);
+    }
+
+    /**
+     * Add an error message to the specified setting.
+     *
+     *
+     * @param string $setting The name of the setting to which the error message should be added.
+     * @param string $code The code associated with the error message.
+     * @param string $message The error message to be added.
+     *
+     * @return void
+     */
+    private static function add_error(string $setting, string $code, string $message): void {
+        add_settings_error(
+            $setting,
+            $code,
+            $message
+        );
+    }
+
 
 
     /**
      * Callback function for enabling transient.
      *
-     * This function includes the 'compado-enable-transient-callback.php' file.
-     *
      * @return void
      */
-    public static function compado_enable_transient_callback() {
+    public static function compado_enable_transient_callback(): void
+    {
         include_once 'View/compado-enable-transient-callback.php';
     }
 
     /**
      * Callback function for compado cache duration.
      *
-     * This function includes the compado_cache_duration_callback.php file.
-     *
      * @return void
      */
-    public static function compado_cache_duration_callback() {
+    public static function compado_cache_duration_callback(): void
+    {
         include_once 'View/compado_cache_duration_callback.php';
     }
 
@@ -205,11 +216,10 @@ class CompadoAdmin
     /**
      * Callback method for compado API endpoint.
      *
-     * This method includes the compado_api_endpoint_callback.php file.
-     *
      * @return void
      */
-    public static function compado_api_endpoint_callback() {
+    public static function compado_api_endpoint_callback(): void
+    {
         include_once 'View/compado_api_endpoint_callback.php';
     }
 }

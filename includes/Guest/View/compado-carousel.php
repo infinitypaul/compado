@@ -6,7 +6,7 @@
         foreach ($coverImages as $index => $coverImage) {
             if ($coverImage) {
                 $isActive = $index === 0 ? ' active' : '';
-                echo '<img src="https://media.api-domain-compado.com/' . esc_attr($coverImage) . '" alt="" class="img' . $isActive . '">';
+                echo '<img src="https://media.api-domain-compado.com/' . esc_attr($coverImage) . '" alt="" class="img' . $isActive . '" loading="lazy">';
             }
         }
         ?>

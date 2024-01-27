@@ -1,6 +1,8 @@
 <?php
 
 namespace Compado\Products;
+use Compado\Products\Admin\CompadoAdmin;
+use Compado\Products\Helper\Config;
 use WP_Query;
 
 defined('ABSPATH') || exit;
@@ -10,44 +12,67 @@ class CompadoProductManager
     private CompadoRenderer $renderer;
 
     /**
-     * @param CompadoApiClient $client
-     * @param CompadoRenderer $renderer
+     * Constructs a new instance of the class.
+     *
+     * @param CompadoApiClient $client The instance of `CompadoApiClient` to be used by the class.
+     * @param CompadoRenderer $renderer The instance of `CompadoRenderer` to be used by the class.
+     * @return void
      */
     public function __construct(CompadoApiClient $client, CompadoRenderer $renderer){
 
         $this->client = $client;
         $this->renderer = $renderer;
+        $this->set_locale();
     }
 
     /**
      * Runs the necessary actions, shortcodes, and filters for the plugin to function properly.
      *
-     * This method adds action hooks to enqueue assets, register a shortcode, and handle custom redirects. It also adds a filter to register query vars.
-     * These actions and filters are essential for the plugin to work as intended.
-     *
      * @return void
      */
     public function run(): void
     {
-        add_shortcode('compado_products', [$this, 'displayProducts']);
         add_action('template_redirect', [$this, 'handle_custom_redirect']);
         add_filter('query_vars', [$this, 'register_query_vars']);
+        add_shortcode(Config::SHORTCODE_PRODUCTS, [$this, 'displayProducts']);
+
+        if (is_admin()) {
+            CompadoAdmin::register_hooks();
+        }
+    }
+
+    /**
+     * Sets the locale for the plugin.
+     *
+     * @return void
+     */
+    private function set_locale(): void
+    {
+        add_action('plugins_loaded', ['Compado\Products\CompadoI18n', 'load_textdomain']);
     }
 
     /**
      * @return void
      */
-    public function enqueueAssets(): void
-    {
-        wp_enqueue_style('compado-style', plugin_dir_url(__FILE__) . '../assets/css/style.css');
-        wp_enqueue_script('compado-script', plugin_dir_url(__FILE__) . '../assets/js/script.js', ['jquery'], false, true);
+    private function enqueueAssets(): void {
+        wp_enqueue_style(
+            Config::STYLE_HANDLE,
+            plugin_dir_url(__FILE__) . Config::CSS_PATH,
+            [],
+            Config::PLUGIN_VERSION
+        );
+        wp_enqueue_script(
+            Config::SCRIPT_HANDLE,
+            plugin_dir_url(__FILE__) . Config::JS_PATH,
+            ['jquery'],
+            Config::PLUGIN_VERSION,
+            true
+        );
     }
 
     /**
      * Displays the products on the frontend.
      *
-     * This method enqueues necessary assets, retrieves the products from the client, and renders them using the renderer.
-     * The products are then returned as a string to be displayed on the frontend.
      *
      * @return string The HTML representation of the products.
      */
@@ -66,7 +91,7 @@ class CompadoProductManager
      */
     public function register_query_vars($vars): mixed
     {
-        $vars[] = 'compado_redirect';
+        $vars[] = Config::QUERY_VAR_REDIRECT;
         return $vars;
     }
 
@@ -81,8 +106,8 @@ class CompadoProductManager
     {
         global $wp_query;
 
-        if (isset($wp_query->query_vars['compado_redirect'])) {
-            $path_segment = $wp_query->query_vars['compado_redirect'];
+        if (isset($wp_query->query_vars[Config::QUERY_VAR_REDIRECT])) {
+            $path_segment = $wp_query->query_vars[Config::QUERY_VAR_REDIRECT];
 
             $actual_redirect_url = esc_url('https://api.compado.com/' . $path_segment);
 

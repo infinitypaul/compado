@@ -18,11 +18,24 @@ defined('ABSPATH') || exit;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+/**
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
+ */
+define('COMPADO_PLUGIN_NAME_VERSION', '1.0.0');
+
 register_activation_hook(__FILE__, ['Compado\Products\CompadoPluginActivator', 'activate']);
 register_deactivation_hook(__FILE__, ['Compado\Products\CompadoPluginActivator', 'deactivate']);
 
 /**
- * @return void
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since 1.0.0
  */
 function run_compado_product_list(): void
 {
@@ -32,10 +45,7 @@ function run_compado_product_list(): void
     $plugin = new CompadoProductManager($client, $render);
     $plugin->run();
 
-    if (is_admin()) {
-        \Compado\Products\Admin\CompadoAdmin::register_hooks();
-    }
+
 }
-add_action('plugins_loaded', ['Compado\Products\CompadoI18n', 'load_textdomain']);
 run_compado_product_list();
 
