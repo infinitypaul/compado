@@ -64,10 +64,7 @@ class CompadoApiClient
      * @return array The array of fetched products.
      */
     protected function fetchProductsFromApi(): array {
-        $options = get_option('compado_products_options');
-        $api_endpoint = $options['api_endpoint'] ?? Config::API_ENDPOINT;
-
-        $response = wp_remote_get($api_endpoint);
+        $response = wp_remote_get(Config::API_ENDPOINT);
 
         if (is_wp_error($response)) {
             $this->logError($response->get_error_message());

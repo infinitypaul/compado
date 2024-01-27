@@ -127,36 +127,10 @@ class CompadoAdmin
 
         $new_input['enable_transient'] = isset($input['enable_transient']) ? 1 : 0;
 
-        //$new_input['api_endpoint'] = self::validate_api_endpoint($input['api_endpoint'] ?? '', $options['api_endpoint'] ?? '');
-        $new_input['api_endpoint'] = Config::API_ENDPOINT;
-
         $new_input['cache_duration'] = self::validate_cache_duration($input['cache_duration'] ?? '', $options['cache_duration'] ?? '');
 
         return $new_input;
     }
-
-    /**
-     * Validates the API endpoint URL.
-     *
-     * @param string $input_api_endpoint The input API endpoint URL to be validated.
-     * @param string $existing_api_endpoint
-     *
-     * @return string
-     */
-    private static function validate_api_endpoint(string $input_api_endpoint, string $existing_api_endpoint): string {
-        if (empty($input_api_endpoint)) {
-            self::add_error('api_endpoint', 'empty_api_endpoint', 'API Endpoint URL is required.');
-            return $existing_api_endpoint;
-        }
-
-        if (!filter_var($input_api_endpoint, FILTER_VALIDATE_URL)) {
-            self::add_error('api_endpoint', 'invalid_api_endpoint', 'Invalid API Endpoint URL provided.');
-            return $existing_api_endpoint;
-        }
-
-        return sanitize_text_field($input_api_endpoint);
-    }
-
 
     /**
      * Validates the cache duration input and returns the existing cache duration if the input is invalid.
