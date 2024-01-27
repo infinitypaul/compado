@@ -1,27 +1,11 @@
 <?php
 
 namespace Compado\Products;
+use Compado\Products\Helper\Config;
+
 defined('ABSPATH') || exit;
 class CompadoApiClient
 {
-    /**
-     * The key used for caching the compado products transient.
-     *
-     * @var string TRANSIENT_KEY
-     */
-    const TRANSIENT_KEY = 'compado_products';
-    /**
-     * The default URI for the API endpoint.
-     *
-     * @var string DEFAULT_URI
-     */
-    const DEFAULT_URI = "https://api.compado.com/v2_1/host/205/category/home/default";
-    /**
-     * The default cache duration in seconds.
-     *
-     * @var int DEFAULT_CACHE_DURATION Default cache duration is 6 hours.
-     */
-    const DEFAULT_CACHE_DURATION = HOUR_IN_SECONDS * 6;
 
     /**
      * Retrieves the products. If the products are already cached, the cached products are returned.
@@ -53,8 +37,8 @@ class CompadoApiClient
     protected function cacheProducts(array $products): void {
         $options = get_option('compado_products_options');
         if (!empty($options['enable_transient'])) {
-            $cache_duration = $options['cache_duration'] ?? self::DEFAULT_CACHE_DURATION;
-            set_transient(self::TRANSIENT_KEY, $products, intval($cache_duration));
+            $cache_duration = $options['cache_duration'] ?? Config::DEFAULT_CACHE_DURATION;
+            set_transient(Config::TRANSIENT_KEY, $products, intval($cache_duration));
         }
     }
 
@@ -67,7 +51,7 @@ class CompadoApiClient
     {
         $options = get_option('compado_products_options');
         if (!empty($options['enable_transient'])) {
-            return get_transient(self::TRANSIENT_KEY);
+            return get_transient(Config::TRANSIENT_KEY);
         }
 
         return false;
@@ -80,7 +64,7 @@ class CompadoApiClient
      */
     protected function fetchProductsFromApi(): array {
         $options = get_option('compado_products_options');
-        $api_endpoint = $options['api_endpoint'] ?? self::DEFAULT_URI;
+        $api_endpoint = $options['api_endpoint'] ?? Config::API_ENDPOINT;
 
         $response = wp_remote_get($api_endpoint);
 
@@ -116,7 +100,6 @@ class CompadoApiClient
      * @param string $body The API response body to parse.
      *
      * @return array The decoded body as an array.
-     * If the decoded body is not an array or is empty, an error is logged and an empty array is returned.
      */
     protected function parseApiResponse(string $body): array {
         $decoded_body = json_decode($body, true);

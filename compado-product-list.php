@@ -18,12 +18,6 @@ defined('ABSPATH') || exit;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-/**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
-define('COMPADO_PLUGIN_NAME_VERSION', '1.0.0');
 
 register_activation_hook(__FILE__, ['Compado\Products\CompadoPluginActivator', 'activate']);
 register_deactivation_hook(__FILE__, ['Compado\Products\CompadoPluginActivator', 'deactivate']);

@@ -2,6 +2,8 @@
 
 namespace Compado\Products;
 
+use Compado\Products\Helper\Config;
+
 class CompadoI18n
 {
     /**
@@ -12,7 +14,7 @@ class CompadoI18n
     public static function load_textdomain(): void
     {
         load_plugin_textdomain(
-            'compado-product-list',
+            Config::TEXT_DOMAIN,
             false,
             dirname( plugin_basename( __FILE__ ) ) . '/languages/'
         );

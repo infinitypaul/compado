@@ -107,6 +107,7 @@
     color: var(--primary-color);
     text-decoration: none;
     text-align: center;
+
 }
 
 .compado-right {
@@ -187,6 +188,7 @@
     color: white;
     border: none;
     padding: 10px 40px;
+    cursor: pointer;
 }
 .compado-hidden-container {
     position: relative;

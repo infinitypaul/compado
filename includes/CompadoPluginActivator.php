@@ -1,6 +1,8 @@
 <?php
 
 namespace Compado\Products;
+use Compado\Products\Helper\Config;
+
 defined('ABSPATH') || exit;
 class CompadoPluginActivator
 {
@@ -11,7 +13,11 @@ class CompadoPluginActivator
      */
     public static function activate(): void
     {
-        add_rewrite_rule('^compado-redirect/(.+)', 'index.php?compado_redirect=$matches[1]', 'top');
+        add_rewrite_rule(
+            '^' . Config::QUERY_VAR_REDIRECT . '/(.+)',
+            'index.php?' . Config::QUERY_VAR_REDIRECT . '=$matches[1]',
+            'top'
+        );
         flush_rewrite_rules();
     }
 
@@ -23,7 +29,7 @@ class CompadoPluginActivator
     public static function deactivate(): void
     {
         flush_rewrite_rules();
-        delete_transient(CompadoApiClient::TRANSIENT_KEY);
+        delete_transient(Config::TRANSIENT_KEY);
         // delete_option('compado_products_options');
     }
 }

@@ -1,7 +1,7 @@
 <?php if (!defined('ABSPATH')) exit; ?>
 
 <?php if (!isset($product)) return;
-$redirectUrl = home_url('/compado-redirect/') . urldecode($product['api_exitover_url']);
+$redirectUrl = home_url('/'.\Compado\Products\Helper\Config::QUERY_VAR_REDIRECT.'/') . urldecode($product['api_exitover_url']);
 
 $coverImages = [
     $product['cover_image'] ?? '',
